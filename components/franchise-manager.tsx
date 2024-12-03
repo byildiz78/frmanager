@@ -15,14 +15,44 @@ import {
   Settings,
   ShieldCheck,
   Store,
-  User,
   X,
   type LucideIcon,
+  Phone,
+  Wallet,
+  MapPin,
+  Briefcase,
+  Shield,
+  Heart,
+  Mail,
+  Calendar,
+  Building,
+  Users,
+  Brain,
+  CheckSquare,
+  DollarSign,
+  Target,
+  Clock,
+  Award,
+  UserCircle,
+  GalleryVerticalEnd,
+  AudioWaveform,
+  Command,
+  ChevronsUpDown,
+  Plus,
+  Sparkles,
+  BadgeCheck,
+  CreditCard,
+  Bell,
+  LogOut,
 } from "lucide-react"
-import { GalleryVerticalEnd, AudioWaveform, Command, ChevronsUpDown, Plus, Sparkles, BadgeCheck, CreditCard, Bell, LogOut } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuGroup, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -57,7 +87,6 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 // Add useIsMobile hook
 const useIsMobile = () => {
@@ -104,7 +133,7 @@ const modules: Module[] = [
   },
   {
     name: "Franchise On Boarding",
-    icon: User,
+    icon: UserCircle,
     subpages: ["Oryantasyon", "Eğitim Programı", "Doküman Yönetimi"],
     isActive: false,
     title: "Franchise On Boarding"
@@ -171,7 +200,7 @@ const data = {
   ],
 }
 
-type Tab = {
+interface Tab {
   id: string
   title: string
   content: React.ReactNode
@@ -182,7 +211,27 @@ export function FranchiseManagerComponent() {
   const [activeTeam, setActiveTeam] = React.useState(data.teams[0])
   const [activeModule, setActiveModule] = React.useState<Module | null>(null)
   const [activeSubpage, setActiveSubpage] = React.useState<string | null>(null)
-  const [openTabs, setOpenTabs] = React.useState<Tab[]>([])
+  const [selectedTab, setSelectedTab] = React.useState<string>("basvurular")
+  const [showNewApplicationForm, setShowNewApplicationForm] = React.useState(false)
+
+  const tabs: Tab[] = [
+    {
+      id: "basvurular",
+      title: "Başvurular",
+      content: <SampleApplicationList onNewClick={() => setShowNewApplicationForm(true)} />
+    },
+    {
+      id: "yeniBasvuru",
+      title: "Yeni Başvuru",
+      content: <ApplicationForm />
+    }
+  ]
+
+  React.useEffect(() => {
+    if (showNewApplicationForm) {
+      setSelectedTab("yeniBasvuru")
+    }
+  }, [showNewApplicationForm])
 
   const handleTabOpen = (module: Module, subpage: string) => {
     const newTab: Tab = {
@@ -190,17 +239,17 @@ export function FranchiseManagerComponent() {
       title: subpage,
       content: <TabContent title={subpage} />
     }
-    setOpenTabs(prev => [...prev, newTab])
+    // setOpenTabs(prev => [...prev, newTab])
     setActiveModule(module)
     setActiveSubpage(subpage)
   }
 
   const handleTabClose = (tabId: string) => {
-    setOpenTabs(prev => prev.filter(tab => tab.id !== tabId))
-    if (openTabs.length === 1) {
-      setActiveModule(null)
-      setActiveSubpage(null)
-    }
+    // setOpenTabs(prev => prev.filter(tab => tab.id !== tabId))
+    // if (openTabs.length === 1) {
+    //   setActiveModule(null)
+    //   setActiveSubpage(null)
+    // }
   }
 
   return (
@@ -383,67 +432,26 @@ export function FranchiseManagerComponent() {
           </header>
 
           <div className="p-6">
-            {openTabs.length > 0 ? (
-              <div>
-                <div className="mb-4 flex space-x-2 overflow-x-auto">
-                  {openTabs.map((tab) => (
-                    <div key={tab.id} className="flex items-center rounded-t-lg bg-white px-4 py-2 shadow-md">
-                      <span className="font-medium">{tab.title}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="ml-2 h-5 w-5 rounded-full p-0 hover:bg-gray-200"
-                        onClick={() => handleTabClose(tab.id)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
+            <div className="mb-4 flex space-x-2 overflow-x-auto">
+              {tabs.map((tab) => (
+                <div key={tab.id} className="flex items-center rounded-t-lg bg-white px-4 py-2 shadow-md">
+                  <span className="font-medium">{tab.title}</span>
+                  {tab.id === selectedTab && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="ml-2 h-5 w-5 rounded-full p-0 hover:bg-gray-200"
+                      onClick={() => handleTabClose(tab.id)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  )}
                 </div>
-                <div className="rounded-lg bg-white p-6 shadow-lg">
-                  {openTabs[openTabs.length - 1].content}
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="rounded-lg bg-white p-6 shadow-lg">
-                  <h2 className="mb-4 text-2xl font-semibold text-gray-800">Hoş Geldiniz</h2>
-                  <p className="text-gray-600">
-                    Franchise yönetim sisteminize hoş geldiniz. Başlamak için soldaki menüden bir modül seçin veya aşağıdaki genel bakış kartlarını inceleyin.
-                  </p>
-                </div>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {modules.map((module) => {
-                    const counts = {
-                      "Başvuru Yönetimi": 26,
-                      "Sözleşme Yönetimi": 97,
-                      "Franchise On Boarding": 15,
-                      "Açılış Yönetimi": 8,
-                      "Kurum içi Eğitim": 41,
-                      "Şube Denetim": 88,
-                      "Royalty Yönetim": 54,
-                      "Tedarik Yönetim": 33
-                    };
-                    return (
-                    <Card key={module.name} className="hover:shadow-lg transition-shadow duration-300">
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                          {module.name}
-                        </CardTitle>
-                        <module.icon className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold">{counts[module.name as keyof typeof counts]}</div>
-                        <p className="text-xs text-muted-foreground">
-                          {module.subpages[0]}
-                        </p>
-                      </CardContent>
-                    </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
+            <div className="rounded-lg bg-white p-6 shadow-lg">
+              {tabs.find(tab => tab.id === selectedTab)?.content}
+            </div>
           </div>
         </main>
       </SidebarInset>
@@ -451,16 +459,307 @@ export function FranchiseManagerComponent() {
   )
 }
 
-function TabContent({ title }: { title: string }) {
+function ApplicationForm() {
   return (
-    <div>
-      <h2 className="mb-4 text-2xl font-semibold text-gray-800">{title}</h2>
-      {title === "Yeni Başvurular" && <SampleApplicationList />}
+    <div className="container mx-auto py-6">
+      <div className="grid gap-8">
+        {/* Kişisel Bilgiler */}
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500">
+          <CardHeader className="flex flex-row items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
+              <UserCircle className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-blue-700">Kişisel Bilgiler</CardTitle>
+              <CardDescription>Başvuru sahibinin temel bilgileri</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-4 mt-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="adSoyad">Ad Soyad</Label>
+                <Input id="adSoyad" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="tcKimlikNo">TC Kimlik No</Label>
+                <Input id="tcKimlikNo" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="dogumTarihi">Doğum Tarihi</Label>
+                <Input id="dogumTarihi" type="date" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="dogumYeri">Doğum Yeri</Label>
+                <Input id="dogumYeri" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="medeniDurum">Medeni Durum</Label>
+              <Input id="medeniDurum" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* İletişim Bilgileri */}
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-green-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+                <Phone className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-green-700">İletişim Bilgileri</CardTitle>
+                <CardDescription>İletişim ve adres bilgileri</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="space-y-2">
+                <Label htmlFor="ikametAdresi">İkamet Adresi</Label>
+                <Textarea id="ikametAdresi" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="telefonNo">Telefon No</Label>
+                  <Input id="telefonNo" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="emailAdresi">E-posta Adresi</Label>
+                  <Input id="emailAdresi" type="email" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Mali Bilgiler */}
+          <Card className="bg-gradient-to-br from-purple-50 to-fuchsia-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-purple-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
+                <Wallet className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-purple-700">Mali Bilgiler</CardTitle>
+                <CardDescription>Finansal durum ve yatırım bilgileri</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="toplamVarlikDegeri">Toplam Varlık Değeri</Label>
+                  <Input id="toplamVarlikDegeri" type="number" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="yatirimButcesi">Yatırım Bütçesi</Label>
+                  <Input id="yatirimButcesi" type="number" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="aylikGelir">Aylık Gelir</Label>
+                  <Input id="aylikGelir" type="number" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="yillikGelir">Yıllık Gelir</Label>
+                  <Input id="yillikGelir" type="number" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* Lokasyon Bilgileri */}
+          <Card className="bg-gradient-to-br from-orange-50 to-amber-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-orange-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-orange-700">Lokasyon Bilgileri</CardTitle>
+                <CardDescription>Hedef lokasyon ve mekan bilgileri</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="hedefSehir">Hedef Şehir</Label>
+                  <Input id="hedefSehir" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="hedefSemt">Hedef Semt</Label>
+                  <Input id="hedefSemt" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="belirlenmisMekanVar" />
+                  <Label htmlFor="belirlenmisMekanVar">Belirlenmiş Mekan Var</Label>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="mekanAlan">Alan (m²)</Label>
+                  <Input id="mekanAlan" type="number" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="kiraBedeli">Kira Bedeli</Label>
+                  <Input id="kiraBedeli" type="number" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* İşletme Planı */}
+          <Card className="bg-gradient-to-br from-cyan-50 to-sky-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-cyan-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center">
+                <Store className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-cyan-700">İşletme Planı</CardTitle>
+                <CardDescription>İşletme ve personel planlaması</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="space-y-2">
+                <Label htmlFor="hedefAcilisTarihi">Hedef Açılış Tarihi</Label>
+                <Input id="hedefAcilisTarihi" type="date" />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="sahsenCalisma" />
+                  <Label htmlFor="sahsenCalisma">İşletmede Şahsen Çalışma</Label>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="planlananPersonelSayisi">Planlanan Personel Sayısı</Label>
+                <Input id="planlananPersonelSayisi" type="number" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* Operasyonel Yetkinlikler */}
+          <Card className="bg-gradient-to-br from-red-50 to-rose-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-red-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center">
+                <Briefcase className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-red-700">Operasyonel Yetkinlikler</CardTitle>
+                <CardDescription>Mesleki beceri ve tecrübeler</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="bilgisayarKullanimiSeviye">Bilgisayar Kullanımı</Label>
+                  <Input id="bilgisayarKullanimiSeviye" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="muhasebeBilgisiSeviye">Muhasebe Bilgisi</Label>
+                  <Input id="muhasebeBilgisiSeviye" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="personelYonetimiSeviye">Personel Yönetimi</Label>
+                  <Input id="personelYonetimiSeviye" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pazarlamaSatisTecrube">Pazarlama ve Satış</Label>
+                  <Input id="pazarlamaSatisTecrube" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Kişisel Özellikler */}
+          <Card className="bg-gradient-to-br from-teal-50 to-emerald-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-teal-500">
+            <CardHeader className="flex flex-row items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-teal-700">Kişisel Özellikler</CardTitle>
+                <CardDescription>Karakter ve yetkinlik özellikleri</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 mt-2">
+              <div className="space-y-2">
+                <Label htmlFor="girisimcilikGecmisi">Girişimcilik Geçmişi</Label>
+                <Textarea id="girisimcilikGecmisi" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="riskAlmaEgilimi">Risk Alma Eğilimi</Label>
+                  <Input id="riskAlmaEgilimi" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="takimCalismasi">Takım Çalışması</Label>
+                  <Input id="takimCalismasi" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="stresYonetimi">Stres Yönetimi</Label>
+                  <Input id="stresYonetimi" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="iletisimBecerileri">İletişim Becerileri</Label>
+                  <Input id="iletisimBecerileri" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Taahhütler */}
+        <Card className="bg-gradient-to-br from-indigo-50 to-violet-50 shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-l-indigo-500">
+          <CardHeader className="flex flex-row items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center">
+              <Shield className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-indigo-700">Taahhütler</CardTitle>
+              <CardDescription>Franchise anlaşması taahhütleri</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-4 mt-2">
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+                <Checkbox id="markaSadakati" className="border-2 border-indigo-200" />
+                <Label htmlFor="markaSadakati" className="text-indigo-700 font-medium">Marka Sadakati</Label>
+              </div>
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+                <Checkbox id="gizlilikSozlesmesi" className="border-2 border-indigo-200" />
+                <Label htmlFor="gizlilikSozlesmesi" className="text-indigo-700 font-medium">Gizlilik Sözleşmesi</Label>
+              </div>
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+                <Checkbox id="rekaberEtmeme" className="border-2 border-indigo-200" />
+                <Label htmlFor="rekaberEtmeme" className="text-indigo-700 font-medium">Rekabet Etmeme</Label>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+                <Checkbox id="egitimKatilimi" className="border-2 border-indigo-200" />
+                <Label htmlFor="egitimKatilimi" className="text-indigo-700 font-medium">Eğitim Katılımı</Label>
+              </div>
+              <div className="flex items-center space-x-3 p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
+                <Checkbox id="standartlaraUyum" className="border-2 border-indigo-200" />
+                <Label htmlFor="standartlaraUyum" className="text-indigo-700 font-medium">Standartlara Uyum</Label>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
 
-function SampleApplicationList() {
+function SampleApplicationList({ onNewClick }: { onNewClick: () => void }) {
   const applications = [
     { id: 1, name: "Ahmet Yılmaz", date: "2024-03-15", status: "Beklemede" },
     { id: 2, name: "Ayşe Kaya", date: "2024-03-14", status: "İnceleniyor" },
@@ -470,34 +769,53 @@ function SampleApplicationList() {
   ]
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İsim</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {applications.map((app) => (
-            <tr key={app.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{app.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{app.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{app.date}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                  ${app.status === 'Onaylandı' ? 'bg-green-100 text-green-800' : 
-                    app.status === 'Reddedildi' ? 'bg-red-100 text-red-800' : 
-                    'bg-yellow-100 text-yellow-800'}`}>
-                  {app.status}
-                </span>
-              </td>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Başvurular</h2>
+        <Button onClick={onNewClick}>
+          <Plus className="w-4 h-4 mr-2" />
+          Yeni Başvuru Ekle
+        </Button>
+      </div>
+
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İsim</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {applications.map((app) => (
+              <tr key={app.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{app.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{app.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{app.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                    ${app.status === 'Onaylandı' ? 'bg-green-100 text-green-800' : 
+                      app.status === 'Reddedildi' ? 'bg-red-100 text-red-800' : 
+                      'bg-yellow-100 text-yellow-800'}`}>
+                    {app.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+function TabContent({ title }: { title: string }) {
+  return (
+    <div>
+      <h2 className="mb-4 text-2xl font-semibold text-gray-800">{title}</h2>
+      {title === "Yeni Başvurular" && <SampleApplicationList onNewClick={() => {}} />}
     </div>
   )
 }

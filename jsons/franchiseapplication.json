@@ -1,0 +1,187 @@
+{
+    "franchiseBasvuruFormu": {
+      "kisiselBilgiler": {
+        "adSoyad": "",
+        "tcKimlikNo": "",
+        "dogumBilgileri": {
+          "tarih": "",
+          "yer": ""
+        },
+        "iletisimBilgileri": {
+          "ikametAdresi": "",
+          "telefonNo": "",
+          "emailAdresi": ""
+        },
+        "medeniDurum": "",
+        "egitimBilgileri": {
+          "egitimDuzeyi": "",
+          "mezunOlunanOkullar": []
+        },
+        "yabanciDiller": []
+      },
+      "meslekiGecmis": {
+        "mevcutIs": {
+          "meslek": "",
+          "pozisyon": "",
+          "sirket": "",
+          "calismasuresi": ""
+        },
+        "gecmisTecrubeler": [
+          {
+            "sirket": "",
+            "pozisyon": "",
+            "baslangicTarihi": "",
+            "bitisTarihi": "",
+            "ayrilmaNedeni": ""
+          }
+        ],
+        "yoneticilikTecrubesi": {
+          "var": false,
+          "suresi": "",
+          "detay": ""
+        },
+        "restoranSektoruTecrubesi": {
+          "var": false,
+          "suresi": "",
+          "detay": ""
+        },
+        "referanslar": [
+          {
+            "adSoyad": "",
+            "sirket": "",
+            "pozisyon": "",
+            "telefon": "",
+            "email": ""
+          }
+        ]
+      },
+      "maliBilgiler": {
+        "toplamVarlikDegeri": 0,
+        "yatirimButcesi": 0,
+        "finansmanKaynaklari": {
+          "ozkaynak": 0,
+          "kredi": 0,
+          "digerKaynaklar": []
+        },
+        "gelirDurumu": {
+          "aylikGelir": 0,
+          "yillikGelir": 0
+        },
+        "mevcutIsletmeler": [
+          {
+            "isletmeAdi": "",
+            "sektorü": "",
+            "yillikCiro": 0
+          }
+        ],
+        "krediSicili": {
+          "krediNotu": 0,
+          "mevcutKrediler": [],
+          "borcDurumu": ""
+        }
+      },
+      "lokasyonBilgileri": {
+        "hedefSehir": "",
+        "hedefSemt": "",
+        "belirlenmisMekan": {
+          "var": false,
+          "adres": "",
+          "alan": 0,
+          "kiraBedeli": 0
+        },
+        "bolgeAnalizi": {
+          "potansiyelMusteriSayisi": 0,
+          "gelirDuzeyi": "",
+          "demografikYapi": "",
+          "rakipIsletmeler": []
+        }
+      },
+      "isletmePlani": {
+        "hedefAcilisTarihi": "",
+        "sahsenCalisma": {
+          "calismaDurumu": false,
+          "pozisyon": ""
+        },
+        "personelPlani": {
+          "planlananPersonelSayisi": 0,
+          "kilitPersonel": []
+        },
+        "buyumeHedefleri": {
+          "birinciYil": "",
+          "ucuncuYil": "",
+          "besinciYil": ""
+        }
+      },
+      "ekBilgiler": {
+        "markaSecimNedeni": "",
+        "franchiseBeklentileri": [],
+        "oncekiFranchiseBasvurulari": [],
+        "sektorArastirmalari": "",
+        "aileBireylerininKatilimi": {
+          "katilimDurumu": false,
+          "katilimDetayi": ""
+        }
+      },
+      "yasalBilgiler": {
+        "adliSicil": {
+          "sabikaDurumu": false,
+          "aciklama": ""
+        },
+        "konkordatoIflas": {
+          "durum": false,
+          "aciklama": ""
+        },
+        "vergiBorcu": {
+          "var": false,
+          "miktar": 0
+        },
+        "sgkBorcu": {
+          "var": false,
+          "miktar": 0
+        },
+        "sirketOrtakliklari": []
+      },
+      "operasyonelYetkinlikler": {
+        "bilgisayarKullanimi": {
+          "seviye": "",
+          "kullanilanProgramlar": []
+        },
+        "muhasebeBilgisi": {
+          "seviye": "",
+          "tecrube": ""
+        },
+        "personelYonetimi": {
+          "seviye": "",
+          "tecrube": ""
+        },
+        "gidaGuvenligi": {
+          "sertifikalar": [],
+          "tecrube": ""
+        },
+        "pazarlamaSatis": {
+          "tecrube": "",
+          "basarilar": []
+        }
+      },
+      "kisiselOzellikler": {
+        "girisimcilikGecmisi": "",
+        "riskAlmaEgilimi": "",
+        "takimCalismasi": "",
+        "stresYonetimi": "",
+        "iletisimBecerileri": ""
+      },
+      "taahhutler": {
+        "markaSadakati": false,
+        "gizlilikSozlesmesi": false,
+        "rekaberEtmeme": false,
+        "egitimKatilimi": false,
+        "standartlaraUyum": false
+      },
+      "basvuruBilgileri": {
+        "basvuruTarihi": "",
+        "basvuruDurumu": "",
+        "degerlendirmeNotu": "",
+        "gorusmeTarihi": ""
+      }
+    }
+  }
